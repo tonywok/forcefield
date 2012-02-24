@@ -8,11 +8,11 @@ module Forcefield
     end
 
     def call(env)
-      @request = Request.new(env)
+      @request = Forcefield::Request.new(env)
 
       @request.with_valid_request do
         if client_verified?
-          env["oauth_client"] = client
+          env["oauth_client"] = @client
           @app.call(env)
         else
           [401, {}, ["Unauthorized. You are part of the Rebel Alliance and a Trader!"]]

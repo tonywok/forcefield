@@ -90,5 +90,76 @@ describe Forcefield::Middleware do
       end
 
     end
+
+
+    context 'client makes request with sufficient and correct OAuth header' do
+
+      let(:test_uri) { "http://example.com" }
+      let(:consumer_credentials) {{ :consumer_key => ImperialClient::DUMMY_KEY, :consumer_secret => ImperialClient::DUMMY_SECRET }}
+      let(:valid_auth_header) {{ "HTTP_AUTHORIZATION" => SimpleOAuth::Header.new(:get, test_uri, {}, consumer_credentials).to_s }}
+
+      context "GET without params" do
+
+        let(:valid_auth_header) {{ "HTTP_AUTHORIZATION" => SimpleOAuth::Header.new(:get, test_uri, {}, consumer_credentials).to_s }}
+
+        it 'has a successful response' do
+          resp = mock_request.get(test_uri, valid_auth_header)
+          resp.status.should == 200
+        end
+
+      end
+
+      context "GET with params" do
+
+        let(:uri_with_params) { "#{test_uri}?foo=bar" }
+        let(:valid_auth_header) {{ "HTTP_AUTHORIZATION" => SimpleOAuth::Header.new(:get, uri_with_params, {}, consumer_credentials).to_s }}
+
+        it 'has a successful response' do
+          resp = mock_request.get(uri_with_params, valid_auth_header)
+          resp.status.should == 200
+        end
+
+      end
+
+      context "POST without params" do
+
+        let(:valid_auth_header) {{ "HTTP_AUTHORIZATION" => SimpleOAuth::Header.new(:post, test_uri, {}, consumer_credentials).to_s }}
+
+        it 'has a successful response' do
+          resp = mock_request.post(test_uri, valid_auth_header)
+          resp.status.should == 200
+        end
+
+      end
+
+      context "POST with params" do
+        context "Content-Type is x-www-form-urlencoded" do
+
+          let(:form_data) {{ :foo => "bar" }}
+          let(:post_data) {{ :content_type => "application/x-www-form-urlencoded", :params => form_data}}
+          let(:valid_auth_header) {{ "HTTP_AUTHORIZATION" => SimpleOAuth::Header.new(:post, test_uri, form_data, consumer_credentials).to_s }}
+
+          it 'has a successful response' do
+            resp = mock_request.post(test_uri, valid_auth_header.merge(post_data))
+            resp.status.should == 200
+          end
+
+        end
+
+        context "Content-Type is anything other than x-www-form-urlencoded" do
+
+          let(:json_data) {{ :foo => "bar"}.to_json }
+          let(:post_data) {{ "CONTENT_TYPE" => "application/json", :input => json_data }}
+          let(:valid_auth_header) {{ "HTTP_AUTHORIZATION" => SimpleOAuth::Header.new(:post, test_uri, {}, consumer_credentials).to_s }}
+
+          it 'has a successful response' do
+            resp = mock_request.post(test_uri, valid_auth_header.merge(post_data))
+            resp.status.should == 200
+          end
+
+        end
+      end
+    end
   end
 end
+
