@@ -3,8 +3,13 @@ require 'rack/auth/abstract/request'
 module Forcefield
   class Request < Rack::Auth::AbstractRequest
 
+    # This method encapsulates the various checks we need to make against the request's
+    # Authorization header before we deem it ready for verification.
+    # Upon passing the checks, we yield to the block so that simple_oauth can determine
+    # whether or not the request has been properly signed.
+    #
     def with_valid_request
-      if provided?
+      if provided? # #provided? defined in Rack::Auth::AbstractRequest
         if !oauth?
           [401, {}, ["Unauthorized. Pst! You forgot to include the Auth scheme"]]
         elsif params[:consumer_key].nil?
@@ -38,15 +43,20 @@ module Forcefield
       @params ||= SimpleOAuth::Header.parse(auth_header)
     end
 
+    # #scheme is defined as an instance method on Rack::Auth::AbstractRequest
+    #
     def oauth?
       scheme == :oauth
     end
 
-    def auth_header # :nodoc:
+    def auth_header
       @env[authorization_key]
     end
 
-    def included_request_params # :nodoc:
+    # only include request params if Content-Type is set to application/x-www/form-urlencoded
+    # (see http://tools.ietf.org/html/rfc5849#section-3.4.1)
+    #
+    def included_request_params
       request.content_type == "application/x-www-form-urlencoded" ? request.params : nil
     end
   end
