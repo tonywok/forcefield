@@ -3,8 +3,8 @@
 Gem::Specification.new do |gem|
   gem.authors       = ["Tony Schneider"]
   gem.email         = ["tony@edgecase.com"]
-  gem.description   = %q{OAuth 1.0 RFC 5849#3.4.1 request verifier. Accompanies a blogpost, and is for learning purposes only.}
-  gem.summary       = %q{OAuth 1.0 RFC 5849#3.4.1 request verifier}
+  gem.description   = %q{OAuth 1.0 RFC 5849#3.2 request verifier. Accompanies a blogpost, and is for learning purposes only.}
+  gem.summary       = %q{OAuth 1.0 RFC 5849#3.2 request verifier}
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
