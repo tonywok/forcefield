@@ -1,5 +1,7 @@
 # Forcefield
 
+`forcefield` is a Rack middleware for verifying incoming requests are correctly signed using the OAuth 1.0 RFC#3.4.1 protocol
+
 ## Disclaimer
 
 Although this code was extracted from a real project. This code and the
