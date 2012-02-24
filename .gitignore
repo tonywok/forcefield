@@ -17,3 +17,4 @@ rerun.txt
 pickle-email-*.html
 public/assets/*
 .zsh_rake_cache
+Gemfile.lock
