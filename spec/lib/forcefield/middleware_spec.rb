@@ -91,7 +91,6 @@ describe Forcefield::Middleware do
 
     end
 
-
     context 'client makes request with sufficient and correct OAuth header' do
 
       let(:test_uri) { "http://example.com" }

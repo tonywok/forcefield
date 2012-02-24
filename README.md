@@ -7,7 +7,7 @@
 
 # License
 
-I would NOT recommend using this code in production. It is intended for learning purposes only.
+I would NOT recommend using for anything other than a starting point. It is intended for learning purposes only.
 
 But, it is MIT, and you can read about it in LICENSE.txt
 
