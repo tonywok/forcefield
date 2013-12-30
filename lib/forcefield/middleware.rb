@@ -15,7 +15,7 @@ module Forcefield
           env["oauth_client"] = @client
           @app.call(env)
         else
-          [401, {}, ["Unauthorized. You are part of the Rebel Alliance and a Trader!"]]
+          [401, {}, ["Unauthorized. You are part of the Rebel Alliance and a Traitor!"]]
         end
       end
     end
